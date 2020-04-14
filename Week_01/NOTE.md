@@ -1,14 +1,11 @@
 # 学习笔记
 
 ## 第一小节：
-**1. 数组的原理与实现：** 
-
+**1. 数组的原理与实现：**   
 		数组是有内存连续的空间拼接而成的，当对数组进行随机访问的时候，可以通过具体下标进行访问，因此数组适合用于随机访问的场景,查询时间复杂度为O(1)。由于数组的内存分配是连续的，所以插入、删除数组中的数据就会比较麻烦，当删除数据时会进行数据的平移，效率会降低，复杂度为O(n)。当数组分配的空间不够的时候，会进行扩容，默认为原始数组的2倍，还会发生数组的copy。
-**2. 链表的原理与实现：**
-
+**2. 链表的原理与实现：**  
 		链表分配的内存空间是不连续的，不需要进行扩容，链表的每个节点都会存储数据与指针，指针用来记录下一个数据的内存地址，因此链表会消费更多的内存空间（空间换时间）。由于链表地址空间不连续，查找的时候需要从头开始遍历，因此查询的时间复杂度为Q(n)。由于链表有指针指向节点的内存地址，空间不是连续的，插入、删除操作不需要进行数据的平移，只需要更改指针的位置，所以时间复杂度为O(1)
-**3.跳表的原理与实现：**
-
+**3.跳表的原理与实现：**  
 		跳表是基于“有序”链表实现的，采用“升为思想+空间换时间”，在原有的链表上建立多级索引，从而降低查询的时间复杂度，从O(n) -> O(logn)。
 
 
@@ -183,8 +180,128 @@
 ***
 ## 第四小节：
 
-	
-		
+### 三数求和
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+		List<List<Integer>> result = new ArrayList<>();
+
+			if ( nums == null || nums.length < 3 ) {
+				return result;
+			}
+
+			Arrays.sort(nums);
+
+			for (int i = 0; i < nums.length-2 ; i++) {
+				//先判断排序后第一个元素是否大于0，大于0直接返回
+				if ( nums[i] > 0 ) {
+					break;
+				}
+				//判断当i>0时，后一个元素是否与前一个元素相等，若相等，会有重复的结果，跳过重复元素
+				if ( i > 0 && nums[i] == nums[i-1] ) {
+					continue;
+				}
+
+				int head = i+1;
+				int tail = nums.length - 1;
+				int sum = 0;
+				while ( head < tail ) {
+					sum = nums[i] + nums[head] + nums[tail];
+
+					//判断 sum的三种情况，大于0，小于0，等于0
+					if ( sum == 0 ) {
+						result.add(Arrays.asList(nums[i] , nums[head] , nums[tail]));
+						while ( head < tail && nums[head] == nums[head+1] ) {
+						   head++;
+						}while ( head < tail && nums[tail] == nums[tail-1] ) {
+						   tail--;
+						}
+						head++;
+						tail--;
+
+					} else if ( sum > 0 ) {
+						tail--;
+					} else {
+						head++;
+					}
+
+				}
+
+			}
+
+        return result;
+
+    }
+}
+
+### 环形链表
+
+/**
+ *  思路一：遍历数组，将遍历到的元素放到Set中，如果为环形链表，当再次遍历到
+ *          头结点的时候，发现set中已经包含该元素，证明链表中有环
+ *          由于开辟了Set集合，长度为数组的长度，空间复杂度为O(n)，
+ *          遍历了整个数组，时间复杂度为O(n)
+ *  思路二：双指针，定义两个指针，一个每次移动一个节点，另一个每次移动2个节点
+ *          当链表中有环，快指针总会追上慢指针
+ *          由于每次移动指针只开辟了指针大小的空间，因此空间复杂度为O(1)
+ *          时间复杂度为O(n)
+ */
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+ 
+ public class Solution {
+    public boolean hasCycle(ListNode head) {
+
+        Set<ListNode> set = new HashSet<>();
+
+        while ( head != null ) {
+
+            if ( set.contains(head) ) {
+                return true;
+            }
+            
+            set.add(head);
+            head = head.next;
+
+        }
+
+        return false;
+        
+    }
+}
+ 
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+
+        if ( head == null ) {
+            return false;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+
+        while ( fast != null && fast.next != null ) {
+
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if ( slow == fast ) {
+                return true;
+            }
+
+        }
+        return false;
+        
+    }
+}	
 		
 		
 		
