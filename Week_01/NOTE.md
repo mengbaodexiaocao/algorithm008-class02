@@ -35,89 +35,90 @@
 
 ### 移动零题目解析：
 
+```		
+	// 方法一：双指针法
+	// 1.遍历数组，指针j指向非0元素
+	// 2.指针i依次增加，遇到0，i直接加1，遇到非0元素与指针j指向的元素进行交换，之后j进行加1操作
+
+	
+	int j = 0;
+	for ( int i = 0; i < nums.length; i++ ) {
+		if ( nums[i] != 0 ) {
+			nums[j] = nums[i];
+			if ( i != j ) {
+				nums[i] = 0;
+			}
+			j++;
+		}
+	}
+
+	return;
+
+	
+   // 方法二：
+   // 1.遍历数组，当遇到元素等于0时，记录0出现的次数 count
+   // 2.若遇到非0元素时，判断 count 是否大于0；若大于0,将当前非0元素的指针向前移动 i-count个位置，再将当前
+   //	位置设置为0
+	
+
+	int count = 0;
+
+	for ( int i = 0; i<nums.length; i++ ) {
 		
-            // 方法一：双指针法
-            // 1.遍历数组，指针j指向非0元素
-            // 2.指针i依次增加，遇到0，i直接加1，遇到非0元素与指针j指向的元素进行交换，之后j进行加1操作
-        
-			
-            int j = 0;
-            for ( int i = 0; i < nums.length; i++ ) {
-                if ( nums[i] != 0 ) {
-                    nums[j] = nums[i];
-                    if ( i != j ) {
-                        nums[i] = 0;
-                    }
-                    j++;
-                }
-            }
+		if ( nums[i] == 0 ) {
+			count++;
+		}
 
-            return;
-		
-			
-           // 方法二：
-           // 1.遍历数组，当遇到元素等于0时，记录0出现的次数 count
-           // 2.若遇到非0元素时，判断 count 是否大于0；若大于0,将当前非0元素的指针向前移动 i-count个位置，再将当前
-           //	位置设置为0
-            
+		else if ( count > 0 ) {
+			nums[i-count] = nums[i];
+			nums[i] = 0; 
+		}
+	}
 
-            int count = 0;
-
-            for ( int i = 0; i<nums.length; i++ ) {
-                
-                if ( nums[i] == 0 ) {
-                    count++;
-                }
-
-                else if ( count > 0 ) {
-                    nums[i-count] = nums[i];
-                    nums[i] = 0; 
-                }
-            }
-
-            return;
+	return;
+```
 		
 		
 ***			
 ## 第三小节：
 
 ### 乘最多水的容器:
-	
-		// 数组 暴力法 枚举每种情况
-		public int maxArea(int[] height) {
-			int maxarea = 0;
-			for ( int i = 0; i < height.length-1; i++ ) {
-				for ( int j=i+1; j < height.length;j++ ) {
-					maxarea = Math.max(maxarea, (j-i) * Math.min(height[i],height[j]) );
-				}
+```	
+	// 数组 暴力法 枚举每种情况
+	public int maxArea(int[] height) {
+		int maxarea = 0;
+		for ( int i = 0; i < height.length-1; i++ ) {
+			for ( int j=i+1; j < height.length;j++ ) {
+				maxarea = Math.max(maxarea, (j-i) * Math.min(height[i],height[j]) );
 			}
-
-			return maxarea;
 		}
-		
-		// 双指针法
-		
-		public int maxArea(int[] height) {
-			int head = 0;
-			int tail = height.length-1;
-			int maxarea = 0;
-			while ( head < tail ) {
-				maxarea = height[head] <= height[tail]
-					? Math.max( maxarea,( tail - head ) * height[head++] )
-					: Math.max( maxarea,( tail - head ) * height[tail--] );
-            
-        }
 
-        return maxarea;
+		return maxarea;
+	}
+	
+	// 双指针法
+	
+	public int maxArea(int[] height) {
+		int head = 0;
+		int tail = height.length-1;
+		int maxarea = 0;
+		while ( head < tail ) {
+			maxarea = height[head] <= height[tail]
+				? Math.max( maxarea,( tail - head ) * height[head++] )
+				: Math.max( maxarea,( tail - head ) * height[tail--] );
+		
+	}
 
-		
-		
-		}
+	return maxarea;
+
 	
 	
+	}
+	
+```	
 ### 爬楼梯问题：
 	
-
+```
  	class Solution {
 		public int climbStairs(int n) {
 	
@@ -182,63 +183,64 @@
 			}
 		}
 
-
+```
 ***
 ## 第四小节：
 
 ### 三数求和：
-class Solution {
-    public List<List<Integer>> threeSum(int[] nums) {
-		List<List<Integer>> result = new ArrayList<>();
+```
+	class Solution {
+		public List<List<Integer>> threeSum(int[] nums) {
+			List<List<Integer>> result = new ArrayList<>();
 
-			if ( nums == null || nums.length < 3 ) {
-				return result;
-			}
-
-			Arrays.sort(nums);
-
-			for (int i = 0; i < nums.length-2 ; i++) {
-				//先判断排序后第一个元素是否大于0，大于0直接返回
-				if ( nums[i] > 0 ) {
-					break;
-				}
-				//判断当i>0时，后一个元素是否与前一个元素相等，若相等，会有重复的结果，跳过重复元素
-				if ( i > 0 && nums[i] == nums[i-1] ) {
-					continue;
+				if ( nums == null || nums.length < 3 ) {
+					return result;
 				}
 
-				int head = i+1;
-				int tail = nums.length - 1;
-				int sum = 0;
-				while ( head < tail ) {
-					sum = nums[i] + nums[head] + nums[tail];
+				Arrays.sort(nums);
 
-					//判断 sum的三种情况，大于0，小于0，等于0
-					if ( sum == 0 ) {
-						result.add(Arrays.asList(nums[i] , nums[head] , nums[tail]));
-						while ( head < tail && nums[head] == nums[head+1] ) {
-						   head++;
-						}while ( head < tail && nums[tail] == nums[tail-1] ) {
-						   tail--;
+				for (int i = 0; i < nums.length-2 ; i++) {
+					//先判断排序后第一个元素是否大于0，大于0直接返回
+					if ( nums[i] > 0 ) {
+						break;
+					}
+					//判断当i>0时，后一个元素是否与前一个元素相等，若相等，会有重复的结果，跳过重复元素
+					if ( i > 0 && nums[i] == nums[i-1] ) {
+						continue;
+					}
+
+					int head = i+1;
+					int tail = nums.length - 1;
+					int sum = 0;
+					while ( head < tail ) {
+						sum = nums[i] + nums[head] + nums[tail];
+
+						//判断 sum的三种情况，大于0，小于0，等于0
+						if ( sum == 0 ) {
+							result.add(Arrays.asList(nums[i] , nums[head] , nums[tail]));
+							while ( head < tail && nums[head] == nums[head+1] ) {
+							   head++;
+							}while ( head < tail && nums[tail] == nums[tail-1] ) {
+							   tail--;
+							}
+							head++;
+							tail--;
+
+						} else if ( sum > 0 ) {
+							tail--;
+						} else {
+							head++;
 						}
-						head++;
-						tail--;
 
-					} else if ( sum > 0 ) {
-						tail--;
-					} else {
-						head++;
 					}
 
 				}
 
-			}
+			return result;
 
-        return result;
-
-    }
-}
-
+		}
+	}
+```
 ### 环形链表：
 ```
 	/**
@@ -261,51 +263,52 @@ class Solution {
 	 *     }
 	 * }
 	 */
- ```
- public class Solution {
-    public boolean hasCycle(ListNode head) {
-
-        Set<ListNode> set = new HashSet<>();
-
-        while ( head != null ) {
-
-            if ( set.contains(head) ) {
-                return true;
-            }
-            
-            set.add(head);
-            head = head.next;
-
-        }
-
-        return false;
-        
-    }
-}
  
-public class Solution {
-    public boolean hasCycle(ListNode head) {
+	 public class Solution {
+		public boolean hasCycle(ListNode head) {
 
-        if ( head == null ) {
-            return false;
-        }
-        ListNode slow = head;
-        ListNode fast = head.next;
+			Set<ListNode> set = new HashSet<>();
 
-        while ( fast != null && fast.next != null ) {
+			while ( head != null ) {
 
-            slow = slow.next;
-            fast = fast.next.next;
+				if ( set.contains(head) ) {
+					return true;
+				}
+				
+				set.add(head);
+				head = head.next;
 
-            if ( slow == fast ) {
-                return true;
-            }
+			}
 
-        }
-        return false;
-        
-    }
-}	
+			return false;
+			
+		}
+	}
+ 
+	public class Solution {
+		public boolean hasCycle(ListNode head) {
+
+			if ( head == null ) {
+				return false;
+			}
+			ListNode slow = head;
+			ListNode fast = head.next;
+
+			while ( fast != null && fast.next != null ) {
+
+				slow = slow.next;
+				fast = fast.next.next;
+
+				if ( slow == fast ) {
+					return true;
+				}
+
+			}
+			return false;
+			
+		}
+	}	
+```
 ***
 
 # 第四课时：栈，队列、优先队列、双端队列
@@ -319,28 +322,29 @@ public class Solution {
 **3.双端队列**  
 相当于”栈与队列的结合体“，可以从头部进行入队、出队操作，也可以从尾部进行入队、出队操作。
 查询、删除的时间复杂度为O(1),查找的复杂度为O(n)。  
-**3.优先队列**
+**3.优先队列**  
 插入操作时间复杂度O(1)，因为取出时候是有优先级划分的，所以取出操作时间复杂度为O(logn),
 底层数据结构实现是：(head堆)。
 
 **addFirst and addLast 实现：**  
+```
 
-		Deque<String> deque = new LinkedList<String>();
+	Deque<String> deque = new LinkedList<String>();
 
-        deque.addFirst("a");
-        deque.addFirst("b");
-        deque.addLast("c");
+	deque.addFirst("a");
+	deque.addFirst("b");
+	deque.addLast("c");
 
-        String str = deque.peek();  	// b
-        System.out.println(str);		// b
-        System.out.println(deque);		// [b, a, c]
+	String str = deque.peek();  	// b
+	System.out.println(str);		// b
+	System.out.println(deque);		// [b, a, c]
 
-        while ( deque.size() > 0) {
-            System.out.println(deque.removeFirst());	// b -> a -> c
-        }
+	while ( deque.size() > 0) {
+		System.out.println(deque.removeFirst());	// b -> a -> c
+	}
 
-        System.out.println(deque);		// []
-		
+	System.out.println(deque);		// []
+```
 **输出结果：**  
 		b
 		[b, a, c]
@@ -349,8 +353,13 @@ public class Solution {
 		c
 		[]
 
+
 ***
 
+## 遇到的困难：  
+1.基础太差，每个题都需要看题解才能写出来。  
+2.栈，队列相关知识理解有点慢，题解有些也看不懂，感觉学习效率低下。  
+3.编程能力弱，源码解读能力差，读源码不知道从哪下手，看到就怕。
 
 		
 		
