@@ -58,7 +58,7 @@ python
 **递归实现二叉树的遍历**  
 
 ```
-**前序：** 打印-左-右  
+前序: 打印-左-右  
 
 def preorder(self,root):
 	if root:
@@ -66,14 +66,14 @@ def preorder(self,root):
 		self.preorder(root.left)
 		self.preorder(root.right)
 		
-**中序：** 左-打印-右  
+中序： 左-打印-右  
 def inorder(self,root):
 	if root:
 		self.inorder(root.left)
 		self.traverse_path.append(root.val)
 		self.inorder(root.right)
 		
-**后续：** 左-右-打印  
+后续： 左-右-打印  
 def postorder(self,root):
 	if root:
 		self.postorder(root.left)
