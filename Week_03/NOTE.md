@@ -61,9 +61,9 @@ public void recur(int level, int param) {
 
 ## 第八节  
 
-**分治**本质就是递归，找最近重复性子问题。本质上就是找重复性及分解问题和最后组合每个子问题的结果。 
-**分治代码模板：**   
+**分治**本质就是递归，找最近重复性子问题。本质上就是找重复性及分解问题和最后组合每个子问题的结果。
 同泛型递归最大区别就是，最后要将子结果merge到一个最终结果。   
+**分治代码模板：**   
 ```
 def divide_conquer(problem,param1,param2,...)
 	# recursion terminator
