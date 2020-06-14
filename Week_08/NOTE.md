@@ -216,6 +216,187 @@ class LRUCache(object):
 
 ## 排序算法
 
+```
+// 插入排序
+    public static List<Integer> insertSort(int[] arry) {
+
+        int preIndex,cur;
+
+        for (int i = 1; i < arry.length; i++) {
+
+            preIndex = i - 1;
+            cur = arry[i];
+
+            while ( preIndex >= 0 && arry[preIndex] > cur ){
+                // 如果当前值大于前一个元素，将前一个元素后移一位，前置下标减一继，继续比较
+                // 之前的数据
+                arry[preIndex+1] = arry[preIndex];
+                preIndex--;
+            }
+            arry[preIndex+1] = cur;
+
+        }
+
+        List<Integer> list = Ints.asList(arry);
+        return list;
+
+    }
+
+```  
+```
+    // 冒泡
+    public static List<Integer> bubbleSort(int[] arry){
+
+        int len = arry.length;
+
+        for (int i = 0;i < len - 1; i++){
+            for(int j = i+1; j < len; j++){
+                if ( arry[i] > arry[j] ){
+                    int tmp = arry[j];
+                    arry[j] = arry[i];
+                    arry[i] = tmp;
+                }
+
+            }
+
+        }
+
+        List<Integer> list = Ints.asList(arry);
+        return list;
+
+
+    }
+```
+
+```
+
+    // 选择
+    public static List<Integer> selectSort(int[] arry){
+
+        int len = arry.length - 1;
+        int minIndex;
+
+        for (int i = 0;i < len - 1; i++){
+            minIndex = i;
+            for(int j = i+1; j < len; j++){
+                if ( arry[j] < arry[minIndex] ){
+                    minIndex = j;
+                }
+
+            }
+            int tmp = arry[i];
+            arry[i] = arry[minIndex];
+            arry[minIndex] = tmp;
+
+        }
+
+        List<Integer> list = Ints.asList(arry);
+        return list;
+
+    }
+```
+
+```
+
+    //快速排序
+    public static void quickSort(int[] array) {
+
+        int len;
+        if(array == null || (len = array.length) == 0 || len == 1) {
+            return ;
+        }
+
+        sort(array, 0, len - 1);
+
+    }
+    public static void sort(int[] array, int left, int right) {
+
+        if ( left > right ) {
+            return;
+        }
+        int base = array[left];
+        int i = left,j = right;
+
+        while ( i != j ) {
+
+            while (array[j] >= base && i < j) {
+                j--;
+            }
+            while( array[i] <= base && i < j) {
+                i++;
+            }
+
+            if ( i < j ) {
+                int tmp = array[i];
+                array[i] = array[j];
+                array[j] = tmp;
+            }
+        }
+
+        array[left] = array[i];
+        array[i] = base;
+
+        sort(array,left,i-1);
+        sort(array,i+1,right);
+
+    }
+```
+
+
+```
+    //归并排序
+    public static List<Integer> mergeSort(int [] arry,int letf,int right){
+        if (letf < right){
+            int mid = ( letf + right ) / 2;
+            mergeSort(arry,letf,mid);
+            mergeSort(arry,mid+1,right);
+            merge(arry,letf,mid,right);
+        }
+
+        return Ints.asList(arry);
+
+    }
+
+    private static void merge(int[] arry, int left, int mid, int right) {
+
+        int []tmp=new int[arry.length];//辅助数组
+        int p1=left,p2=mid+1,k=left;
+
+        while(p1<=mid && p2<=right){
+            if(arry[p1]<=arry[p2])
+                tmp[k++]=arry[p1++];
+            else
+                tmp[k++]=arry[p2++];
+        }
+
+        while(p1<=mid) tmp[k++]=arry[p1++];
+        while(p2<=right) tmp[k++]=arry[p2++];
+
+        //复制回原素组
+        for (int i = left; i <=right; i++)
+            arry[i]=tmp[i];
+
+
+
+    }
+
+```  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
